@@ -6,6 +6,7 @@ import com.LeverX.FinalProject.entity.Role;
 import com.LeverX.FinalProject.entity.User;
 import com.LeverX.FinalProject.repository.UserRepo;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -38,7 +39,13 @@ public class UserServiceImp implements UserService {
 
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
-        return userRepo.findUserByEmailFromSecure(email);
+        User user = userRepo.findUserByEmailFromSecure(email);
+
+        if (user.getActivationCode() == null) {
+            return user;
+        }
+
+        throw new BadCredentialsException("Bad Credentials");
     }
 
     @Override
@@ -89,5 +96,35 @@ public class UserServiceImp implements UserService {
         } catch (NoResultException ex) {
             return false;
         }
+    }
+
+    @Override
+    public void rememberPassword(String email) {
+        User user = userRepo.findUserByEmail(email);
+        user.setActivationCode(UUID.randomUUID().toString());
+
+        String message = String.format(
+                "Hello, %s! \n" + "You requested a password reset? \n" +
+                        " Please, visit next link: http://localhost:8080/newPassword/%s",
+                user.getEmail(),
+                user.getActivationCode());
+
+        mailService.send(user.getEmail(), "Activation code", message);
+    }
+
+    @Override
+    public User findUserByCode(String code) {
+       return userRepo.finByActivationCode(code);
+    }
+
+    @Override
+    public void createNewPassword(User user) {
+        User currentUser = userRepo.findUserByEmail(user.getEmail());
+
+        String encryptPassword = passwordEncoder.encode(user.getPassword());
+
+        currentUser.setPassword(encryptPassword);
+        currentUser.setActivationCode(null);
+        userRepo.add(currentUser);
     }
 }

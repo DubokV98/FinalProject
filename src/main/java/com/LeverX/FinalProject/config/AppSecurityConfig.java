@@ -18,27 +18,21 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @ComponentScan(basePackages = {"com.LeverX.FinalProject.service"})
 @EnableWebSecurity
 public class AppSecurityConfig extends WebSecurityConfigurerAdapter {
-   @Autowired
+    @Autowired
     private UserService userService;
-
-    /*@Autowired
-    public void setUserService(UserService userService) {
-        this.userService = userService;
-    }*/
 
     @Autowired
     private PasswordEncoder passwordEncoder;
 
     @Bean
-    public PasswordEncoder getPasswordEncoder()
-    {
+    public PasswordEncoder getPasswordEncoder() {
         return new BCryptPasswordEncoder(8);
     }
 
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests()
-                .antMatchers("/", "/registration", "/object")
+                .antMatchers("/", "/registration", "/object", "/activate/*")
                 .permitAll()
                 .anyRequest().authenticated()
                 .and()

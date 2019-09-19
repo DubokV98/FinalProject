@@ -16,4 +16,10 @@ public interface UserService extends UserDetailsService {
     User findUserById(int id);
 
     boolean activateUser(String code);
+
+    void rememberPassword(String email);
+
+    User findUserByCode(String code);
+
+    void createNewPassword(User user);
 }
