@@ -7,7 +7,7 @@
     <title>GAME_TRADE_PLATFORM</title>
     <a href="/">Main page</a>
     <br>
-             <@l.logout/>
+        <@l.logout/>
     <br>
 </head>
 <body>

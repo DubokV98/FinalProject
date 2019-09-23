@@ -29,19 +29,19 @@ public class TraderController {
 
     @RequestMapping(value = "/object", method = RequestMethod.POST)
     public ResponseEntity<String> addGameObject(@Valid GameObject gameObject,
-                                                @RequestParam int author_id,
-                                                @RequestParam String name_Game,
-                                                @RequestParam String style) throws JsonProcessingException {
-        Game game = gameService.addGame(name_Game, style);
+                                                @Valid Game game,
+                                                @RequestParam int author_id) throws JsonProcessingException {
 
-        gameObject = gameObjectService.addGameObject(gameObject, author_id, game);
+        Game currentGame = gameService.addGame(game);
+
+        gameObject = gameObjectService.addGameObject(gameObject, author_id, currentGame);
 
         String currentGameObject = objectMapper.writeValueAsString(gameObject);
         return ResponseEntity.ok(currentGameObject);
     }
 
     @RequestMapping(value = "/object", method = RequestMethod.GET)
-    public ResponseEntity<String> getAllObjectByTrader() throws JsonProcessingException {
+    public ResponseEntity<String> getAllObjectByTrader() throws JsonProcessingException{
         User user = (User) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         int authorIdInt = user.getId().intValue();
 
@@ -51,7 +51,7 @@ public class TraderController {
         return ResponseEntity.ok(obj);
     }
 
-    @RequestMapping(value = "/object", method = RequestMethod.DELETE, params = "id")
+    @RequestMapping(value = "/object", method = RequestMethod.DELETE)
     public String deleteTraderObject(@RequestParam int id) {
         gameObjectService.deleteGameObjectById(id);
 

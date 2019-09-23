@@ -10,6 +10,6 @@ Registration
             <div><label> Password: <input type="password" name="password"/> </label></div>
             <div><label> Password: <input type="password" name="password2"/> </label></div>
             <div><input type="submit" value="Sign In"/></div>
-        <#--input type="hidden" name="_csrf" value="${_csrf.token}"/-->
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
 </@c.page>

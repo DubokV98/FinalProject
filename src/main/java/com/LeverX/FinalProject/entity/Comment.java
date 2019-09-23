@@ -5,16 +5,17 @@ import com.fasterxml.jackson.databind.annotation.JsonSerialize;
 import com.fasterxml.jackson.datatype.jsr310.ser.LocalDateSerializer;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.RequiredArgsConstructor;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.time.LocalDate;
 import java.util.Objects;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "comment")
@@ -23,6 +24,7 @@ public class Comment {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @NotBlank(message = "message cannot be empty!")
     @JsonProperty
     private String message;
 
@@ -30,6 +32,7 @@ public class Comment {
     @JsonSerialize(using = LocalDateSerializer.class)
     private LocalDate created_at;
 
+    @NotBlank(message = "commentator name cannot be empty!")
     @JsonProperty
     private String commentatorName;
 

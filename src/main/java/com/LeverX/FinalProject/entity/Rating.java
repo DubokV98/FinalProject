@@ -1,17 +1,14 @@
 package com.LeverX.FinalProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.AllArgsConstructor;
-import lombok.Getter;
-import lombok.RequiredArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "rating")
@@ -43,7 +40,6 @@ public class Rating {
 
     @Override
     public int hashCode() {
-
         return Objects.hash(id, rating, ratingcol, avg_rating);
     }
 

@@ -16,16 +16,15 @@ public class GameServiceImp implements GameService {
     private GameRepo gameRepo;
 
     @Override
-    public Game addGame(String name, String style) {
-        Game game = gameRepo.findGameByName(name);
+    public Game addGame(Game game) {
+        Game currentGame = gameRepo.findGameByName(game.getName());
 
-        if (game == null) {
-            game = new Game(name, style);
+        if (currentGame == null) {
             gameRepo.addGame(game);
-            game = gameRepo.findGameByName(name);
+            currentGame = gameRepo.findGameByName(game.getName());
         }
 
-        return game;
+        return currentGame;
     }
 
     @Override
@@ -43,9 +42,12 @@ public class GameServiceImp implements GameService {
     }
 
     @Override
-    public Game updateGame(int id, String name) {
+    public Game updateGame(int id, String name, String style) {
         try {
             Game game = gameRepo.findGameById(id);
+            if (style.length() != 0) {
+                game.setStyle(style);
+            }
             game.setName(name);
             gameRepo.editGame(game);
             return game;

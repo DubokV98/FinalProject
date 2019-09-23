@@ -11,6 +11,6 @@ Registration
             <div><label> First-name: <input type="text" name="first_name"/> </label></div>
             <div><label> last-name: <input type="text" name="last_name"/> </label></div>
             <div><input type="submit" value="Sign In"/></div>
-        <#--input type="hidden" name="_csrf" value="${_csrf.token}"/-->
+        <input type="hidden" name="_csrf" value="${_csrf.token}"/>
         </form>
 </@c.page>

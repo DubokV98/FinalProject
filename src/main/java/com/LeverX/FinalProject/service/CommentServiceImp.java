@@ -22,11 +22,14 @@ public class CommentServiceImp implements CommentService {
     private CommentRepo commentRepo;
 
     @Override
-    public Comment addCommentOnGameObjectAndTrader(int gameObjectId, int userId, String commentatorName, String message) {
+    public Comment addCommentOnGameObjectAndTrader(int gameObjectId, int userId, Comment comment) {
         User user = userRepo.findUserById(userId);
         GameObject gameObject = gameObjectRepo.findGameObjectById(gameObjectId);
 
-        Comment comment = new Comment(message, LocalDate.now(), commentatorName, false, user, gameObject);
+        comment.setCreated_at(LocalDate.now());
+        comment.setApprove(false);
+        comment.setUser(user);
+        comment.setGameObject(gameObject);
 
         commentRepo.addComment(comment);
         return comment;

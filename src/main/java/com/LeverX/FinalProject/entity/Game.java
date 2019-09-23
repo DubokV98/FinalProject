@@ -1,14 +1,18 @@
 package com.LeverX.FinalProject.entity;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import lombok.Setter;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotBlank;
 import java.util.Objects;
 
 @Getter
 @Setter
-@RequiredArgsConstructor
+@NoArgsConstructor
 @AllArgsConstructor
 @Entity
 @Table(name = "game")
@@ -18,10 +22,12 @@ public class Game {
     @JsonProperty
     private Long id;
 
+    @NotBlank(message = "Game name cannot be empty!")
     @JsonProperty
     private String name;
 
     @JsonProperty
+    @NotBlank(message = "Style cannot be empty!")
     private String style;
 
     public Game(String name, String style) {

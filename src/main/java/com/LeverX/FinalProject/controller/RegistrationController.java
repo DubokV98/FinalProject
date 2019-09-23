@@ -85,7 +85,6 @@ public class RegistrationController {
         String message;
 
         if (user.getPassword().equals(null) || !user.getPassword().equals(user.getPassword2())) {
-            String gavno = user.getPassword()+"asd";
             message = objectMapper.writeValueAsString("Passwords are different!");
             return ResponseEntity.ok(message);
         }

@@ -5,9 +5,9 @@ import com.LeverX.FinalProject.entity.Game;
 import java.util.List;
 
 public interface GameService {
-    Game addGame(String name, String style);
+    Game addGame(Game game);
 
-    Game updateGame(int id, String name);
+    Game updateGame(int id, String name, String style);
 
     List<Game> getAllGame();
 

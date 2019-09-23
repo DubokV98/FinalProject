@@ -8,11 +8,16 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import javax.validation.Valid;
 import java.util.List;
+import java.util.Map;
+
 
 @Controller
 public class GameController {
@@ -30,17 +35,26 @@ public class GameController {
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.POST)
-    public ResponseEntity<String> addGame(@RequestParam String name, @RequestParam String style) throws JsonProcessingException {
-        Game game = gameService.addGame(name, style);
+    public ResponseEntity<String> addGame(@Valid Game game, BindingResult bindingResult) throws JsonProcessingException {
 
-        String obj = objectMapper.writeValueAsString(game);
+        if (bindingResult.hasErrors()) {
+            Map<String, String> errors = ControllerUtils.getErrors(bindingResult);
+
+            String message = objectMapper.writeValueAsString(errors);
+            return ResponseEntity.ok(message);
+        }
+
+        Game currentGame = gameService.addGame(game);
+
+        String obj = objectMapper.writeValueAsString(currentGame);
         return ResponseEntity.ok(obj);
     }
 
     @RequestMapping(value = "/games", method = RequestMethod.PUT)
     public ResponseEntity<String> updateGame(@RequestParam int id,
-                                             @RequestParam String name) throws JsonProcessingException {
-        Game game = gameService.updateGame(id, name);
+                                             @RequestParam String name,
+                                             @RequestParam String style) throws JsonProcessingException , Exception {
+        Game game = gameService.updateGame(id, name, style);
 
         String obj = objectMapper.writeValueAsString(game);
         return ResponseEntity.ok(obj);

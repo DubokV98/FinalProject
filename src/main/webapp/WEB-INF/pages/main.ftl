@@ -11,7 +11,7 @@
                 </#list>
             </table>
             <button type="submit">ADD</button>
-        <#--input type="hidden" name="_csrf" value="${_csrf.token}" /-->
+        <input type="hidden" name="_csrf" value="${_csrf.token}" />
         </form>
     </div>
 
